@@ -9,19 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.pinup.barapp.R
-import com.pinup.barapp.databinding.FragmentPinupHomeBinding
+import com.pinup.barapp.databinding.FragmentPinupMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomePinupFragment : Fragment() {
+class MainPinupFragment : Fragment() {
 
-    private lateinit var binding: FragmentPinupHomeBinding
+    private lateinit var mainBinding: FragmentPinupMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPinupHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        mainBinding = FragmentPinupMainBinding.inflate(inflater, container, false)
+        return mainBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,16 +30,16 @@ class HomePinupFragment : Fragment() {
         val navHost = childFragmentManager
             .findFragmentById(R.id.fragment_container_view) as NavHostFragment
         val navController = navHost.navController
-        binding.bottomNavigation.setupWithNavController(navController)
-        binding.bottomNavigation.selectedItemId = R.id.menuFragment
+        mainBinding.bottomNavigation.setupWithNavController(navController)
+        mainBinding.bottomNavigation.selectedItemId = R.id.menuFragment
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.blankFragment,
                 R.id.basketFragment,
                 R.id.QRFragment,
-                R.id.reservationQrFragment -> binding.bottomNavigation.visibility = View.GONE
-                else -> binding.bottomNavigation.visibility = View.VISIBLE
+                R.id.reservationQrFragment -> mainBinding.bottomNavigation.visibility = View.GONE
+                else -> mainBinding.bottomNavigation.visibility = View.VISIBLE
             }
         }
 

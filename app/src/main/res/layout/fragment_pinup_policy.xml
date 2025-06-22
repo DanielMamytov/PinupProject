@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.PolicySportBarFragment">
+    tools:context=".ui.fragments.PolicyPinupAppFragment">
 
     <WebView
-        android:id="@+id/policyWebView"
+        android:id="@+id/pinupPolicyWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ProgressBar
-        android:id="@+id/privacyProgressBar"
+        android:id="@+id/pinupPolicyProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="@android:color/holo_red_dark"
@@ -36,6 +36,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <include layout="@layout/offline_notification_layout" />
+    <include layout="@layout/network_issue_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

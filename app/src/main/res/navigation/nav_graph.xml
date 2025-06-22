@@ -2,24 +2,24 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/startFragment">
 
 
         <fragment
-            android:id="@+id/splashFragment"
-            android:name="com.pinup.barapp.ui.fragments.LaunchSportBarFragment"
+            android:id="@+id/startFragment"
+            android:name="com.pinup.barapp.ui.fragments.StartPinupAppFragment"
             android:label="Splash" >
 
             <action
-                android:id="@+id/action_splashFragment_to_welcomeFragment"
+                android:id="@+id/action_startFragment_to_welcomeFragment"
                 app:destination="@id/welcomeFragment"
-                app:popUpTo="@id/splashFragment"
+                app:popUpTo="@id/startFragment"
                 app:popUpToInclusive="true"/>
         </fragment>
 
         <fragment
             android:id="@+id/welcomeFragment"
-            android:name="com.pinup.barapp.ui.fragments.WelcomePinupFragment"
+            android:name="com.pinup.barapp.ui.fragments.GreetingsPinupFragment"
             android:label="Welcome" />
 
 </navigation>

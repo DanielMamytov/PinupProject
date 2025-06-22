@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/welcomeLayout"
+    android:id="@+id/greetingsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/welcome_screen_background"
     android:padding="24dp"
-    tools:context="com.pinup.barapp.ui.fragments.WelcomePinupFragment">
+    tools:context="com.pinup.barapp.ui.fragments.GreetingsPinupFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
 
     <!-- Кнопка внизу -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/next_material_button"
+        android:id="@+id/nextButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginBottom="42dp"

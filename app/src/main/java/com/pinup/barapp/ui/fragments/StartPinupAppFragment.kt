@@ -11,31 +11,32 @@ import androidx.fragment.app.Fragment
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.pinup.barapp.databinding.FragmentSportBarSplashBinding
-import com.pinup.barapp.utils.SportBarNavigation.DEFAULT_DOMAIN_LINK
-import com.pinup.barapp.utils.SportBarNavigation.SAVED_OFFER_KEY
-import com.pinup.barapp.utils.SportBarNavigation.USER_STATUS_FLAG
-import com.pinup.barapp.utils.SportBarNavigation.ONBOARDING_SHOWN_KEY
-import com.pinup.barapp.utils.SportBarNavigation.getSportBarPreferences
-import com.pinup.barapp.utils.SportBarNavigation.launchSportBarFragmentWithoutBackstack
+import com.pinup.barapp.databinding.FragmentPinupStartBinding
+import com.pinup.barapp.utils.PinupAppNavigator.REMOTE_CONFIG_URL
+import com.pinup.barapp.utils.PinupAppNavigator.PERSISTED_OFFER_KEY
+import com.pinup.barapp.utils.PinupAppNavigator.USER_ACTIVE_FLAG
+import com.pinup.barapp.utils.PinupAppNavigator.ONBOARDING_DISPLAYED_KEY
+import com.pinup.barapp.utils.PinupAppNavigator.getPinupPrefs
+import com.pinup.barapp.utils.PinupAppNavigator.openPinupFragmentWithoutBackstack
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 
-class LaunchSportBarFragment : Fragment() {
+class StartPinupAppFragment : Fragment() {
 
-    private lateinit var splashBinding: FragmentSportBarSplashBinding
+    private lateinit var startBinding: FragmentPinupStartBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        splashBinding = FragmentSportBarSplashBinding.inflate(inflater, container, false)
-        return splashBinding.root
+        startBinding = FragmentPinupStartBinding.inflate(inflater, container, false)
+        return startBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+        startLoadingAnimation()
         handleAppInitialization()
 
         android.os.Handler(Looper.getMainLooper()).postDelayed({
@@ -45,16 +46,16 @@ class LaunchSportBarFragment : Fragment() {
     }
 
     private fun navigateToProjectFragment() {
-        val launchedBefore = context?.getSportBarPreferences()?.getBoolean(ONBOARDING_SHOWN_KEY, false) == true
+        val launchedBefore = context?.getPinupPrefs()?.getBoolean(ONBOARDING_DISPLAYED_KEY, false) == true
         if (launchedBefore) {
-            parentFragmentManager.launchSportBarFragmentWithoutBackstack(HomePinupFragment())
+            parentFragmentManager.openPinupFragmentWithoutBackstack(MainPinupFragment())
         } else {
-            parentFragmentManager.launchSportBarFragmentWithoutBackstack(WelcomePinupFragment())
+            parentFragmentManager.openPinupFragmentWithoutBackstack(GreetingsPinupFragment())
         }
     }
 
     private fun handleAppInitialization() {
-        val offerLink = context?.getSportBarPreferences()?.getString(SAVED_OFFER_KEY, "") ?: ""
+        val offerLink = context?.getPinupPrefs()?.getString(PERSISTED_OFFER_KEY, "") ?: ""
         if (!isUser()) {
             navigateToProjectFragment()
         } else if (offerLink.isNotEmpty()) {
@@ -66,7 +67,7 @@ class LaunchSportBarFragment : Fragment() {
 
     private fun getLinks() {
         val queue = Volley.newRequestQueue(context)
-        val url = DEFAULT_DOMAIN_LINK
+        val url = REMOTE_CONFIG_URL
 
         val stringRequest = object : StringRequest(Method.GET, url, Response.Listener { offerLink ->
 
@@ -87,21 +88,29 @@ class LaunchSportBarFragment : Fragment() {
 
     private fun navigateBasedOnOfferLink(offerLink: String) {
         if (offerLink.isNotEmpty()) {
-            parentFragmentManager.launchSportBarFragmentWithoutBackstack(WelcomePinupFragment())
+            parentFragmentManager.openPinupFragmentWithoutBackstack(GreetingsPinupFragment())
         } else {
             navigateToProjectFragment()
         }
     }
 
     private fun saveLink(offerLink: String) {
-        context?.getSportBarPreferences()?.edit { putString(SAVED_OFFER_KEY, offerLink)?.apply() }
+        context?.getPinupPrefs()?.edit { putString(PERSISTED_OFFER_KEY, offerLink)?.apply() }
     }
 
     private fun saveUserFalse() {
-        context?.getSportBarPreferences()?.edit { putBoolean(USER_STATUS_FLAG, false)?.apply() }
+        context?.getPinupPrefs()?.edit { putBoolean(USER_ACTIVE_FLAG, false)?.apply() }
     }
 
     private fun isUser(): Boolean {
-        return context?.getSportBarPreferences()?.getBoolean(USER_STATUS_FLAG, true) ?: true
+        return context?.getPinupPrefs()?.getBoolean(USER_ACTIVE_FLAG, true) ?: true
+    }
+
+    private fun startLoadingAnimation() {
+        startBinding.pinupCircleLoaderView.apply {
+            scaleX = 0f
+            scaleY = 0f
+            animate().scaleX(1f).scaleY(1f).setDuration(500).start()
+        }
     }
 }
